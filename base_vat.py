@@ -7,7 +7,7 @@ class res_partner(models.Model):
 
     def check_vat_cl(self, vat):
         body, vdig = '', ''
-        if vat == '55555555K':
+        if vat == '555555555':
             return True
         if len(vat) != 9:
             return False
