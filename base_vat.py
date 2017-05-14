@@ -10,10 +10,18 @@ class res_partner(models.Model):
 
     @api.constrains('vat')
     def _rut_unique(self):
-        partner = self.env['res.partner'].search([('vat','=',self.vat),('id','!=', self.id)])
-        if self.vat !="CL555555555" and partner:
-            raise UserError(_('El rut debe ser único'))
-            return False
+        for r in self:
+            if not r.vat or r.parent_id:
+                continue
+            partner = self.env['res.partner'].search(
+                [
+                    ('vat','=', r.vat),
+                    ('id','!=', r.id),
+                    ('parent_id', '!=', r.id),
+                ])
+            if r.vat !="CL555555555" and partner:
+                raise UserError(_('El rut debe ser único'))
+                return False
 
     def check_vat_cl(self, vat):
         body, vdig = '', ''
