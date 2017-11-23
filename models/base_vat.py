@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
-from odoo import models, fields, api
-import re
 
-class res_partner(models.Model):
+from odoo import models, fields, api
+
+class ResPartner(models.Model):
+    
     _inherit = 'res.partner'
 
     def check_vat_cl(self, vat):
@@ -14,7 +15,7 @@ class res_partner(models.Model):
         else:
             body, vdig = vat[:-1], vat[-1].upper()
         try:
-            vali = range(2,8) + [2,3]
+            vali = list(range(2,8)) + [2,3]
             operar = '0123456789K0'[11 - (
                 sum([int(digit)*factor for digit, factor in zip(
                     body[::-1],vali)]) % 11)]
